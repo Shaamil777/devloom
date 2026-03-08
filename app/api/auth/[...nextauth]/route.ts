@@ -1,18 +1,25 @@
 import nextAuth from "next-auth"
-import github from "next-auth/providers/github"
-import google from "next-auth/providers/google"
+import Github from "next-auth/providers/github"
+import Google from "next-auth/providers/google"
+
+import { PrismaAdapter } from "@auth/prisma-adapter"
+import prisma from "@/lib/prisma"
 
 const handler = nextAuth({
-    providers:[
+    adapter: PrismaAdapter(prisma),
+    providers: [
         Github({
-            clientId:
-            ClientSecret:
+            clientId: process.env.GITHUB_ID!,
+            clientSecret: process.env.GITHUB_SECRET!
         }),
         Google({
-            clientId:
-            ClientSecret:
+            clientId: process.env.GOOGLE_ID!,
+            clientSecret: process.env.GOOGLE_SECRET!
         })
-    ]
+    ],
+    session: {
+        strategy: "database"
+    }
 })
 
-export {handler as GET, handler as POST}
+export { handler as GET, handler as POST }
