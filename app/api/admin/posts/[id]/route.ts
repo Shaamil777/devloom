@@ -1,0 +1,68 @@
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import prisma from "@/lib/prisma";
+
+export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
+    try {
+        const session = await getServerSession(authOptions);
+        if (!session?.user?.email) {
+            return Response.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
+        const { id } = await params;
+
+        const user = await prisma.user.findUnique({
+            where: { email: session.user.email }
+        });
+
+        if (user?.role !== "ADMIN") {
+            return Response.json({ error: "Forbidden: Admins only" }, { status: 403 });
+        }
+
+        const body = await req.json();
+        const { published } = body;
+
+        // Optional validation to ensure they pass a boolean
+        if (typeof published !== "boolean") {
+            return Response.json({ error: "Published status must be a boolean" }, { status: 400 });
+        }
+
+        const post = await prisma.post.update({
+            where: { id },
+            data: { published }
+        });
+
+        return Response.json(post);
+    } catch (error) {
+        console.error(error);
+        return Response.json({ error: "Failed to update post status" }, { status: 500 });
+    }
+}
+
+export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
+    try {
+        const session = await getServerSession(authOptions);
+        if (!session?.user?.email) {
+            return Response.json({ error: "Unauthorized" }, { status: 401 });
+        }
+
+        const { id } = await params;
+
+        const user = await prisma.user.findUnique({
+            where: { email: session.user.email }
+        });
+
+        if (user?.role !== "ADMIN") {
+            return Response.json({ error: "Forbidden: Admins only" }, { status: 403 });
+        }
+
+        await prisma.post.delete({
+            where: { id }
+        });
+
+        return Response.json({ message: "Post deleted successfully" });
+    } catch (error) {
+        console.error(error);
+        return Response.json({ error: "Failed to delete post" }, { status: 500 });
+    }
+}
