@@ -43,7 +43,9 @@ export function ListPostCard({ post }: { post: any }) {
                 <div className="flex items-center text-xs text-muted-foreground gap-2 font-medium">
                     <span>{format(new Date(post.createdAt), "MMM d, yyyy")}</span>
                     <span className="hidden sm:inline">&bull;</span>
-                    <span className="bg-secondary/10 text-secondary px-2 rounded-full hidden sm:inline">{post.tags?.[0]?.tag?.name || "Blog"}</span>
+                    {post.tags?.[0] && (
+                        <span className="bg-[#F97316] text-white font-bold px-3 py-1 text-[11px] rounded-full hidden sm:inline shadow-sm uppercase tracking-wider">{post.tags[0].tag.name}</span>
+                    )}
                     <span>&bull;</span>
                     <span>6 min read</span>
                 </div>

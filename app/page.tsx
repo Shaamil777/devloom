@@ -43,30 +43,23 @@ export default async function Home() {
                 New & Popular
               </h2>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {/* Large Featured Post spans 2 columns */}
+              <div className="flex flex-col gap-6">
+                {/* Horizontal Full Width Featured Post */}
                 {featuredPost && (
-                  <div className="md:col-span-2 md:row-span-2">
+                  <div className="w-full">
                     <FeaturedPostCard post={featuredPost} />
                   </div>
                 )}
 
-                {/* Right Side Compact Grid Posts */}
-                <div className="grid grid-cols-1 gap-6 md:col-span-1">
-                  {gridPosts.slice(0, 2).map((post) => (
-                    <PostCard key={post.id} post={post} />
-                  ))}
-                </div>
+                {/* Grid Posts below Featured */}
+                {gridPosts.length > 0 && (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 mt-2">
+                    {gridPosts.map((post) => (
+                      <PostCard key={post.id} post={post} />
+                    ))}
+                  </div>
+                )}
               </div>
-
-              {/* Row 2 of Compact Grid Posts if available */}
-              {gridPosts.length > 2 && (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-                  {gridPosts.slice(2, 5).map((post) => (
-                    <PostCard key={post.id} post={post} />
-                  ))}
-                </div>
-              )}
             </div>
           )}
 

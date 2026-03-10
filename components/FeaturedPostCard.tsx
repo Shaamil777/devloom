@@ -20,7 +20,7 @@ export function FeaturedPostCard({ post }: { post: any }) {
             {/* Content at the bottom overlay */}
             <div className="absolute bottom-0 left-0 w-full p-6 md:p-8 text-white flex flex-col gap-3">
                 {post.tags?.[0] && (
-                    <span className="bg-white text-black text-xs font-bold px-3 py-1 rounded-full w-max mb-1">
+                    <span className="bg-[#F97316] text-white text-xs font-bold px-3 py-1 rounded-full w-max mb-1 uppercase tracking-wider">
                         {post.tags[0].tag.name}
                     </span>
                 )}

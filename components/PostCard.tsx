@@ -54,7 +54,7 @@ export function PostCard({ post }: PostCardProps) {
             <div className="flex flex-col flex-1 p-5">
                 <div className="flex items-center gap-2 mb-3 flex-wrap">
                     {post.tags.slice(0, 3).map((tagObj) => (
-                        <Badge key={tagObj.tag.id} variant="secondary" className="bg-secondary/20 text-secondary hover:bg-secondary/30 transition-colors">
+                        <Badge key={tagObj.tag.id} variant="secondary" className="bg-[#F97316] text-white hover:bg-[#F97316]/90 transition-colors uppercase tracking-widest text-[10px] shadow-sm font-bold">
                             {tagObj.tag.name}
                         </Badge>
                     ))}

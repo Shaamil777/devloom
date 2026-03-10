@@ -46,13 +46,29 @@ export async function POST(req: Request) {
 
         const body = await req.json()
 
+        const tagsToConnectOrCreate = body.tags ? body.tags.map((tagName: string) => {
+            const tagSlug = tagName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+            return {
+                tag: {
+                    connectOrCreate: {
+                        where: { slug: tagSlug },
+                        create: { name: tagName, slug: tagSlug }
+                    }
+                }
+            }
+        }) : [];
+
         const post = await prisma.post.create({
             data: {
                 title: body.title,
                 slug: body.slug,
                 content: body.content,
                 coverImage: body.coverImage,
-                authorId: user.id
+                authorId: user.id,
+                published: true,
+                tags: {
+                    create: tagsToConnectOrCreate
+                }
             }
         })
 
