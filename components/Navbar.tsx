@@ -28,7 +28,7 @@ export default function Navbar() {
 
                     <div className="flex items-center gap-4 text-sm font-medium text-muted-foreground">
                         <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
-                        <Link href="/blogs" className="hover:text-foreground transition-colors">Posts</Link>
+                        <Link href="/blogs" className="hover:text-foreground transition-colors">Blogs</Link>
                         <Link href="/saved" className="hover:text-foreground hidden sm:block transition-colors">Saved</Link>
                     </div>
                 </div>
