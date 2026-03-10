@@ -4,10 +4,11 @@ import { format } from "date-fns";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { Bookmark, MessageSquare } from "lucide-react";
+import { MessageSquare } from "lucide-react";
 import { Comments } from "@/components/Comments";
 import { LikeButton } from "@/components/LikeButton";
 import { ShareButton } from "@/components/ShareButton";
+import { BookmarkButton } from "@/components/BookmarkButton";
 
 interface PageProps {
     params: Promise<{ slug: string }>;
@@ -130,9 +131,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                                 </span>
                             )}
                         </a>
-                        <button className="h-11 w-11 rounded-full bg-card hover:bg-muted border border-border flex items-center justify-center transition-all duration-300 text-muted-foreground hover:text-green-500 hover:border-green-500/50 group shadow-sm hover:shadow-md">
-                            <Bookmark className="h-5 w-5 group-hover:fill-green-500/20" />
-                        </button>
+                        <BookmarkButton postSlug={post.slug} />
                         <div className="h-px w-6 bg-border mx-auto my-1"></div>
                         <ShareButton title={post.title} slug={post.slug} />
                     </aside>
@@ -162,9 +161,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                             </span>
                         )}
                     </a>
-                    <button className="h-12 w-12 rounded-full bg-card hover:bg-muted border border-border flex items-center justify-center transition-all duration-300 text-muted-foreground hover:text-green-500 hover:border-green-500/50 group shadow-sm hover:shadow-md">
-                        <Bookmark className="h-5 w-5 group-hover:fill-green-500/20" />
-                    </button>
+                    <BookmarkButton postSlug={post.slug} />
                     <ShareButton title={post.title} slug={post.slug} />
                 </div>
 

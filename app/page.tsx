@@ -2,8 +2,9 @@ import prisma from "@/lib/prisma"
 import { HeroBanner } from "@/components/HeroBanner"
 import { FeaturedPostCard } from "@/components/FeaturedPostCard"
 import { PostCard } from "@/components/PostCard"
-import { ListPostCard } from "@/components/ListPostCard"
 import { TrendingTags } from "@/components/TrendingTags"
+import Link from "next/link"
+import { ArrowRight } from "lucide-react"
 
 // Force dynamic so it fetches fresh posts on reload
 export const dynamic = "force-dynamic";
@@ -13,16 +14,16 @@ export default async function Home() {
   const posts = await prisma.post.findMany({
     where: { published: true },
     orderBy: { createdAt: "desc" },
+    take: 5,
     include: {
       author: true,
       tags: { include: { tag: true } }
     }
   })
 
-  // Separate posts for grid vs list to match Hashnode style
+  // Separate posts for featured and grid
   const featuredPost = posts[0]
-  const gridPosts = posts.slice(1, 5) // Next 4 posts in small grid
-  const listPosts = posts.slice(5) // Remaining posts in list
+  const gridPosts = posts.slice(1, 5) // Up to 4 small grid posts
 
   return (
     <main className="max-w-7xl mx-auto px-4 py-8 w-full bg-background min-h-screen">
@@ -60,17 +61,19 @@ export default async function Home() {
                   </div>
                 )}
               </div>
-            </div>
-          )}
 
-          {/* List View: Rest of the Posts */}
-          {listPosts.length > 0 && (
-            <div>
-              <div className="flex flex-col gap-2">
-                {listPosts.map((post) => (
-                  <ListPostCard key={post.id} post={post} />
-                ))}
-              </div>
+              {/* Explore More Button */}
+              {posts.length > 0 && (
+                <div className="mt-12 flex justify-center w-full">
+                  <Link
+                    href="/blogs"
+                    className="flex items-center gap-2 group px-8 py-3.5 bg-primary/10 hover:bg-primary/20 text-primary font-bold rounded-full transition-all duration-300"
+                  >
+                    <span>Explore More Articles</span>
+                    <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </div>
+              )}
             </div>
           )}
 

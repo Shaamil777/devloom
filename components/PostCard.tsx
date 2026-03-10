@@ -24,16 +24,16 @@ interface PostCardProps {
             };
         }[];
     };
+    compact?: boolean;
 }
 
-export function PostCard({ post }: PostCardProps) {
-    // Extract a short excerpt from the content (strip HTML tags if any)
-    const plainTextExcerpt = post.content.replace(/<[^>]+>/g, "").slice(0, 120) + "...";
+export function PostCard({ post, compact = false }: PostCardProps) {
+    const excerptLength = compact ? 80 : 120;
+    const plainTextExcerpt = post.content.replace(/<[^>]+>/g, "").slice(0, excerptLength) + "...";
 
     return (
         <Card className="flex flex-col overflow-hidden transition-all hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1 bg-card border-border h-full">
-            <Link href={`/blogs/${post.slug}`} className="block relative aspect-video overflow-hidden group">
-                {/* If there's an image, show it. Otherwise show a sleek gradient placeholder */}
+            <Link href={`/blogs/${post.slug}`} className={`block relative overflow-hidden group ${compact ? 'aspect-[16/9] max-h-[160px]' : 'aspect-video'}`}>
                 {post.coverImage ? (
                     <>
                         <img
@@ -41,7 +41,6 @@ export function PostCard({ post }: PostCardProps) {
                             alt={post.title}
                             className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
                         />
-                        {/* The Black Overlay to make text pop as requested */}
                         <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors" />
                     </>
                 ) : (
@@ -51,7 +50,7 @@ export function PostCard({ post }: PostCardProps) {
                 )}
             </Link>
 
-            <div className="flex flex-col flex-1 p-5">
+            <div className={`flex flex-col flex-1 ${compact ? 'p-4' : 'p-5'}`}>
                 <div className="flex items-center gap-2 mb-3 flex-wrap">
                     {post.tags.slice(0, 3).map((tagObj) => (
                         <Badge key={tagObj.tag.id} variant="secondary" className="bg-[#F97316] text-white hover:bg-[#F97316]/90 transition-colors uppercase tracking-widest text-[10px] shadow-sm font-bold">
@@ -61,24 +60,24 @@ export function PostCard({ post }: PostCardProps) {
                 </div>
 
                 <Link href={`/blogs/${post.slug}`} className="group-hover:underline">
-                    <h3 className="text-xl font-bold tracking-tight mb-2 text-foreground line-clamp-2">
+                    <h3 className={`font-bold tracking-tight mb-1.5 text-foreground line-clamp-2 ${compact ? 'text-base' : 'text-xl'}`}>
                         {post.title}
                     </h3>
                 </Link>
-                <p className="text-muted-foreground text-sm line-clamp-3 mb-4 flex-1">
+                <p className={`text-muted-foreground line-clamp-2 flex-1 ${compact ? 'text-xs mb-3' : 'text-sm mb-4 line-clamp-3'}`}>
                     {plainTextExcerpt}
                 </p>
 
-                <div className="flex items-center gap-3 mt-auto pt-4 border-t border-border/50">
-                    <Avatar className="h-8 w-8 border border-border">
+                <div className={`flex items-center gap-2.5 mt-auto border-t border-border/50 ${compact ? 'pt-3' : 'pt-4'}`}>
+                    <Avatar className={`border border-border ${compact ? 'h-6 w-6' : 'h-8 w-8'}`}>
                         <AvatarImage src={post.author.image || ""} />
                         <AvatarFallback className="bg-primary text-primary-foreground text-xs">
                             {post.author.name?.charAt(0) || "U"}
                         </AvatarFallback>
                     </Avatar>
                     <div className="flex flex-col">
-                        <p className="text-sm font-medium leading-none text-foreground">{post.author.name}</p>
-                        <p className="text-xs text-muted-foreground mt-0.5">
+                        <p className={`font-medium leading-none text-foreground ${compact ? 'text-xs' : 'text-sm'}`}>{post.author.name}</p>
+                        <p className="text-[11px] text-muted-foreground mt-0.5">
                             {format(new Date(post.createdAt), "MMM d, yyyy")}
                         </p>
                     </div>
