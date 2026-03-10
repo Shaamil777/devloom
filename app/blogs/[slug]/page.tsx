@@ -4,8 +4,10 @@ import { format } from "date-fns";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { Bookmark, Share2, Heart, MessageSquare } from "lucide-react";
+import { Bookmark, MessageSquare } from "lucide-react";
 import { Comments } from "@/components/Comments";
+import { LikeButton } from "@/components/LikeButton";
+import { ShareButton } from "@/components/ShareButton";
 
 interface PageProps {
     params: Promise<{ slug: string }>;
@@ -119,9 +121,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
                     {/* Left Sticky Actions */}
                     <aside className="hidden md:flex flex-col gap-5 sticky top-32 h-fit shrink-0 mt-2">
-                        <button className="h-11 w-11 rounded-full bg-card hover:bg-muted border border-border flex items-center justify-center transition-all duration-300 text-muted-foreground hover:text-primary hover:border-primary/50 group shadow-sm hover:shadow-md">
-                            <Heart className="h-5 w-5 group-hover:fill-primary/20" />
-                        </button>
+                        <LikeButton postSlug={post.slug} />
                         <a href="#comments" className="h-11 w-11 rounded-full bg-card hover:bg-muted border border-border flex items-center justify-center transition-all duration-300 text-muted-foreground hover:text-blue-500 hover:border-blue-500/50 group shadow-sm hover:shadow-md relative">
                             <MessageSquare className="h-5 w-5 group-hover:fill-blue-500/20" />
                             {post._count.comments > 0 && (
@@ -134,9 +134,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                             <Bookmark className="h-5 w-5 group-hover:fill-green-500/20" />
                         </button>
                         <div className="h-px w-6 bg-border mx-auto my-1"></div>
-                        <button className="h-11 w-11 rounded-full bg-card hover:bg-muted border border-border flex items-center justify-center transition-all duration-300 text-muted-foreground hover:text-secondary hover:border-secondary/50 group shadow-sm hover:shadow-md">
-                            <Share2 className="h-5 w-5" />
-                        </button>
+                        <ShareButton title={post.title} slug={post.slug} />
                     </aside>
 
                     {/* Content Area */}
@@ -155,9 +153,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
                 {/* Mobile Action Bar */}
                 <div className="md:hidden flex items-center justify-center gap-6 mt-12 py-6 border-t border-border">
-                    <button className="h-12 w-12 rounded-full bg-card hover:bg-muted border border-border flex items-center justify-center transition-all duration-300 text-muted-foreground hover:text-primary hover:border-primary/50 group shadow-sm hover:shadow-md">
-                        <Heart className="h-5 w-5 group-hover:fill-primary/20" />
-                    </button>
+                    <LikeButton postSlug={post.slug} />
                     <a href="#comments" className="h-12 w-12 rounded-full bg-card hover:bg-muted border border-border flex items-center justify-center transition-all duration-300 text-muted-foreground hover:text-blue-500 hover:border-blue-500/50 group shadow-sm hover:shadow-md relative">
                         <MessageSquare className="h-5 w-5 group-hover:fill-blue-500/20" />
                         {post._count.comments > 0 && (
@@ -169,9 +165,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                     <button className="h-12 w-12 rounded-full bg-card hover:bg-muted border border-border flex items-center justify-center transition-all duration-300 text-muted-foreground hover:text-green-500 hover:border-green-500/50 group shadow-sm hover:shadow-md">
                         <Bookmark className="h-5 w-5 group-hover:fill-green-500/20" />
                     </button>
-                    <button className="h-12 w-12 rounded-full bg-card hover:bg-muted border border-border flex items-center justify-center transition-all duration-300 text-muted-foreground hover:text-secondary hover:border-secondary/50 group shadow-sm hover:shadow-md">
-                        <Share2 className="h-5 w-5" />
-                    </button>
+                    <ShareButton title={post.title} slug={post.slug} />
                 </div>
 
                 {/* Comments Section */}
