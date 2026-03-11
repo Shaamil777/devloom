@@ -9,6 +9,7 @@ import { Comments } from "@/components/Comments";
 import { LikeButton } from "@/components/LikeButton";
 import { ShareButton } from "@/components/ShareButton";
 import { BookmarkButton } from "@/components/BookmarkButton";
+import { PostActions } from "@/components/PostActions";
 
 interface PageProps {
     params: Promise<{ slug: string }>;
@@ -67,7 +68,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                     {post.tags.length > 0 && (
                         <div className="flex flex-wrap justify-center gap-2 mb-6">
                             {post.tags.map((tagObj) => (
-                                <Link key={tagObj.tag.id} href={`/tags/${tagObj.tag.slug}`}>
+                                <Link key={tagObj.tag.id} href={`/blogs?tag=${tagObj.tag.slug}`}>
                                     <Badge variant="secondary" className="bg-[#F97316] text-white hover:bg-[#F97316]/90 transition-transform hover:-translate-y-0.5 uppercase tracking-widest text-xs px-4 py-1.5 shadow-[0_4px_14px_0_rgba(249,115,22,0.39)] font-bold cursor-pointer">
                                         {tagObj.tag.name}
                                     </Badge>
@@ -134,6 +135,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                         <BookmarkButton postSlug={post.slug} />
                         <div className="h-px w-6 bg-border mx-auto my-1"></div>
                         <ShareButton title={post.title} slug={post.slug} />
+                        <PostActions postSlug={post.slug} authorId={post.authorId} />
                     </aside>
 
                     {/* Content Area */}
@@ -163,6 +165,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                     </a>
                     <BookmarkButton postSlug={post.slug} />
                     <ShareButton title={post.title} slug={post.slug} />
+                    <PostActions postSlug={post.slug} authorId={post.authorId} />
                 </div>
 
                 {/* Comments Section */}

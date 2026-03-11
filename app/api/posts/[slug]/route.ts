@@ -66,7 +66,8 @@ export async function PUT(req: Request, { params }: { params: Promise<{ slug: st
             where: { slug },
             data: {
                 title: body.title,
-                content: body.content
+                content: body.content,
+                coverImage: body.coverImage
             }
         })
 
