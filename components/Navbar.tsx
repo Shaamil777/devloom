@@ -1,6 +1,6 @@
 "use client"
 import Link from "next/link"
-import { useSession, signIn, signOut } from "next-auth/react"
+import { useSession, signOut } from "next-auth/react"
 import { Search, PenSquare, LogOut, LayoutDashboard } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -100,11 +100,10 @@ export default function Navbar() {
                             </DropdownMenu>
                         </>
                     ) : (
-                        <Button
-                            onClick={() => signIn()}
-                            className="rounded-full"
-                        >
-                            Sign In
+                        <Button asChild className="rounded-full">
+                            <Link href="/login">
+                                Sign In
+                            </Link>
                         </Button>
                     )}
                 </div>

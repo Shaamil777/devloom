@@ -7,21 +7,25 @@ import Google from "next-auth/providers/google"
 import { NextAuthOptions } from "next-auth"
 
 export const authOptions: NextAuthOptions = {
- adapter: PrismaAdapter(prisma),
+    adapter: PrismaAdapter(prisma),
 
- providers: [
-  Github({
-   clientId: process.env.GITHUB_ID!,
-   clientSecret: process.env.GITHUB_SECRET!
-  }),
+    providers: [
+        Github({
+            clientId: process.env.GITHUB_ID!,
+            clientSecret: process.env.GITHUB_SECRET!
+        }),
 
-  Google({
-   clientId: process.env.GOOGLE_ID!,
-   clientSecret: process.env.GOOGLE_SECRET!
-  })
- ],
+        Google({
+            clientId: process.env.GOOGLE_ID!,
+            clientSecret: process.env.GOOGLE_SECRET!
+        })
+    ],
 
- session: {
-  strategy: "database"
- }
+    pages: {
+        signIn: "/login",
+    },
+
+    session: {
+        strategy: "database"
+    }
 }
