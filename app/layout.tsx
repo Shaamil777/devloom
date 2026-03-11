@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 import { QueryProvider } from "@/components/providers/QueryProvider";
 
@@ -18,12 +19,13 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en" className={cn("dark font-sans", geist.variable)}>
-            <body className="antialiased">
+            <body className="antialiased flex flex-col min-h-screen">
                 <QueryProvider>
                     <AuthProvider>
 
                         <Navbar />
-                        {children}
+                        <div className="flex-1">{children}</div>
+                        <Footer />
                     </AuthProvider>
                 </QueryProvider>
             </body>
