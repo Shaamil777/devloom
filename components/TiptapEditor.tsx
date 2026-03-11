@@ -31,7 +31,6 @@ export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
 
     return (
         <div className="border border-border rounded-xl bg-card overflow-hidden focus-within:ring-1 focus-within:ring-primary/50 transition-all shadow-sm">
-            {/* Simple Toolbar */}
             <div className="bg-muted flex items-center gap-2 p-2 border-b border-border text-foreground">
                 <button
                     onClick={() => editor.chain().focus().toggleBold().run()}
@@ -92,7 +91,6 @@ export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
                 </button>
             </div>
 
-            {/* The actual editable area */}
             <div className="bg-background w-full h-full overflow-y-auto">
                 <EditorContent editor={editor} />
             </div>

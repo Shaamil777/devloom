@@ -27,7 +27,6 @@ export default async function BlogsPage({ searchParams }: PageProps) {
     const currentPage = typeof resolvedParams.page === 'string' ? Math.max(1, parseInt(resolvedParams.page) || 1) : 1
     const ITEMS_PER_PAGE = 12
 
-    // Fetch all available tags for the filter
     const tags = await prisma.tag.findMany({
         orderBy: { name: 'asc' }
     })
@@ -43,11 +42,9 @@ export default async function BlogsPage({ searchParams }: PageProps) {
         } : {})
     }
 
-    // Count total posts for pagination
     const totalPosts = await prisma.post.count({ where: whereClause })
     const totalPages = Math.ceil(totalPosts / ITEMS_PER_PAGE)
 
-    // Fetch posts, optionally filtering by specific tag slug
     const posts = await prisma.post.findMany({
         where: whereClause,
         take: ITEMS_PER_PAGE,
@@ -73,7 +70,6 @@ export default async function BlogsPage({ searchParams }: PageProps) {
                 </p>
             </div>
 
-            {/* Tag Filter Row */}
             <div className="flex flex-wrap items-center justify-center gap-3 mb-16 pb-8 border-b border-border/50">
                 <Link href="/blogs" scroll={false}>
                     <Badge
@@ -130,7 +126,6 @@ export default async function BlogsPage({ searchParams }: PageProps) {
                                 
                                 {Array.from({ length: totalPages }).map((_, i) => {
                                     const page = i + 1;
-                                    // Show first, last, current, and adjacent pages
                                     if (page === 1 || page === totalPages || (page >= currentPage - 1 && page <= currentPage + 1)) {
                                         return (
                                             <PaginationItem key={page}>
@@ -147,7 +142,6 @@ export default async function BlogsPage({ searchParams }: PageProps) {
                                         );
                                     }
                                     
-                                    // Render ellipses where there are gaps
                                     if (page === currentPage - 2 || page === currentPage + 2) {
                                         return (
                                             <PaginationItem key={page}>

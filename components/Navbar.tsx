@@ -33,7 +33,6 @@ export default function Navbar() {
         <nav className="border-b border-border bg-background relative z-50">
             <div className="flex h-16 items-center px-4 max-w-7xl mx-auto w-full gap-4">
 
-                {/* 1. LEFT SECTION (Logo + Main Links) */}
                 <div className="flex items-center gap-6 md:gap-8">
                     <Link href="/" className="font-bold text-xl tracking-tight hidden sm:block">
                         DevLoom
@@ -46,7 +45,6 @@ export default function Navbar() {
                     </div>
                 </div>
 
-                {/* 2. CENTER SECTION (Search Bar) */}
                 <div className="flex-1 flex justify-center max-w-md mx-auto hidden md:flex">
                     <form onSubmit={handleSearch} className="relative w-full">
                         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -60,9 +58,7 @@ export default function Navbar() {
                     </form>
                 </div>
 
-                {/* 3. RIGHT SECTION (Auth / Profile) */}
                 <div className="flex items-center gap-2 sm:gap-4 ml-auto">
-                    {/* Mobile Search Toggle */}
                     <Button 
                         variant="ghost" 
                         size="icon" 
@@ -77,7 +73,6 @@ export default function Navbar() {
                         <div className="h-8 w-8 rounded-full bg-muted animate-pulse"></div>
                     ) : session ? (
                         <>
-                            {/* Create Post Button */}
                             <Button asChild variant="ghost" size="sm" className="hidden sm:flex rounded-full">
                                 <Link href="/dashboard/write">
                                     <PenSquare className="h-4 w-4 mr-2" />
@@ -85,7 +80,6 @@ export default function Navbar() {
                                 </Link>
                             </Button>
 
-                            {/* User Profile Dropdown */}
                             <DropdownMenu>
                                 <DropdownMenuTrigger className="focus:outline-none">
                                     <Avatar className="h-9 w-9 border cursor-pointer hover:opacity-80 transition">
@@ -136,7 +130,6 @@ export default function Navbar() {
 
             </div>
 
-            {/* Mobile Search Dropdown */}
             {isSearchOpen && (
                 <div className="md:hidden border-t border-border p-4 bg-background w-full">
                     <form onSubmit={handleSearch} className="relative w-full">

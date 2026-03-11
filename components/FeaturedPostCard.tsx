@@ -9,15 +9,12 @@ export function FeaturedPostCard({ post }: { post: any }) {
                 <img src={post.coverImage} alt={post.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
             ) : (
                 <div className="absolute inset-0 w-full h-full bg-[#1e2532] flex items-center justify-center transition-transform duration-700 group-hover:scale-105 border-4 border-[#161B22]">
-                    {/* Fallback pattern */}
                     <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "linear-gradient(#A855F7 1px, transparent 1px), linear-gradient(90deg, #A855F7 1px, transparent 1px)", backgroundSize: "20px 20px" }}></div>
                 </div>
             )}
 
-            {/* Dark gradient overlay for text readability */}
             <div className="absolute inset-0 bg-gradient-to-t from-[#0B0E14] via-[#0B0E14]/70 to-transparent opacity-90 transition-opacity group-hover:opacity-100" />
 
-            {/* Content at the bottom overlay */}
             <div className="absolute bottom-0 left-0 w-full p-6 md:p-8 text-white flex flex-col gap-3">
                 {post.tags?.[0] && (
                     <span className="bg-[#F97316] text-white text-xs font-bold px-3 py-1 rounded-full w-max mb-1 uppercase tracking-wider">

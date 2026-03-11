@@ -22,7 +22,6 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
         const body = await req.json();
         const { published } = body;
 
-        // Optional validation to ensure they pass a boolean
         if (typeof published !== "boolean") {
             return Response.json({ error: "Published status must be a boolean" }, { status: 400 });
         }

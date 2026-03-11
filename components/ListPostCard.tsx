@@ -9,7 +9,6 @@ export function ListPostCard({ post }: { post: any }) {
     return (
         <div className="flex flex-col-reverse md:flex-row gap-4 md:gap-8 py-8 border-b border-border/50 group">
             <div className="flex-1 flex flex-col justify-center">
-                {/* Author row */}
                 <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-2 text-sm">
                         <Avatar className="h-6 w-6">
@@ -27,7 +26,6 @@ export function ListPostCard({ post }: { post: any }) {
                     </button>
                 </div>
 
-                {/* Title & Excerpt */}
                 <Link href={`/blogs/${post.slug}`} className="group-hover:underline decoration-border underline-offset-4 mb-2">
                     <h2 className="text-xl md:text-[22px] font-bold text-foreground leading-tight tracking-tight">
                         {post.title}
@@ -39,7 +37,6 @@ export function ListPostCard({ post }: { post: any }) {
                     </p>
                 </Link>
 
-                {/* Meta row */}
                 <div className="flex items-center text-xs text-muted-foreground gap-2 font-medium">
                     <span>{format(new Date(post.createdAt), "MMM d, yyyy")}</span>
                     <span className="hidden sm:inline">&bull;</span>
@@ -51,14 +48,12 @@ export function ListPostCard({ post }: { post: any }) {
                 </div>
             </div>
 
-            {/* Right side image */}
             {post.coverImage ? (
                 <Link href={`/blogs/${post.slug}`} className="block shrink-0 w-full md:w-[240px] aspect-[16/9] md:aspect-[4/3] overflow-hidden rounded-xl border border-border mt-2 md:mt-0 opacity-90 hover:opacity-100 transition-opacity">
                     <img src={post.coverImage} alt={post.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                 </Link>
             ) : (
                 <Link href={`/blogs/${post.slug}`} className="block shrink-0 w-full md:w-[240px] aspect-[16/9] md:aspect-[4/3] overflow-hidden rounded-xl border border-border mt-2 md:mt-0 bg-card flex items-center justify-center hover:bg-card/80 transition-colors">
-                    {/* Minimal pattern */}
                     <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "linear-gradient(#A855F7 1px, transparent 1px), linear-gradient(90deg, #A855F7 1px, transparent 1px)", backgroundSize: "10px 10px" }}></div>
                     <span className="text-muted-foreground font-mono opacity-30 text-4xl">{'</>'}</span>
                 </Link>

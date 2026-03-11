@@ -25,7 +25,6 @@ export default async function SavedPage() {
         redirect("/login")
     }
 
-    // Fetch saved posts for UI
     const savedPostsData = await prisma.savedPost.findMany({
         where: { userId: user.id },
         orderBy: { createdAt: "desc" },

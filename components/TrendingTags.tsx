@@ -2,7 +2,6 @@ import Link from "next/link";
 import prisma from "@/lib/prisma";
 
 export async function TrendingTags() {
-    // Fetch the top 15 tags ordered by the number of posts connected to them
     const tags = await prisma.tag.findMany({
         include: {
             _count: {
@@ -31,7 +30,6 @@ export async function TrendingTags() {
                             <span className="font-bold text-foreground group-hover:text-primary transition-colors tracking-tight">#{tag.name}</span>
                         </div>
                         <div className="flex items-center gap-2">
-                            {/* Small mock avatars to simulate activity like Hashnode */}
                             <div className="flex -space-x-1.5 opacity-80 group-hover:opacity-100 transition-opacity">
                                 <div className="w-5 h-5 rounded-full border border-card bg-slate-300"></div>
                                 <div className="w-5 h-5 rounded-full border border-card bg-slate-400"></div>

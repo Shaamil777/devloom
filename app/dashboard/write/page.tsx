@@ -13,13 +13,13 @@ export default function WritePage() {
     const router = useRouter()
     const [step, setStep] = useState(1)
 
-    // Form State
+   
     const [title, setTitle] = useState("")
     const [coverImage, setCoverImage] = useState("")
     const [content, setContent] = useState("<p>Start writing your masterpiece...</p>")
     const [isUploading, setIsUploading] = useState(false)
 
-    // Tags logic
+  
     const [tags, setTags] = useState<string[]>([])
 
     const { data: availableTags = [] } = useQuery({
@@ -35,10 +35,10 @@ export default function WritePage() {
         setTags(tags.filter(t => t !== tagToRemove))
     }
 
-    // Dynamic slug preview
+
     const slugPreview = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '')
 
-    // Handle Image Upload Directly
+    
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0]
         if (!file) return
@@ -56,7 +56,9 @@ export default function WritePage() {
             })
             const data = await res.json()
             if (data.secure_url) {
-                setCoverImage(data.secure_url)
+               
+                const optimizedUrl = data.secure_url.replace('/upload/', '/upload/f_auto,q_auto/')
+                setCoverImage(optimizedUrl)
             }
         } catch (error) {
             console.error("Upload failed", error)
@@ -65,7 +67,7 @@ export default function WritePage() {
         }
     }
 
-    // Publishing Mutation
+  
     const createPost = useMutation({
         mutationFn: async () => {
             const res = await fetch('/api/posts', {
@@ -83,7 +85,7 @@ export default function WritePage() {
             return res.json()
         },
         onSuccess: (data) => {
-            // Redirect to the newly created live blog post!
+          
             router.push(`/blogs/${data.slug}`)
         }
     })
@@ -91,7 +93,7 @@ export default function WritePage() {
     return (
         <div className="max-w-4xl mx-auto py-10 px-4 min-h-screen flex flex-col">
 
-            {/* Top Navigation / Progress */}
+            
             <div className="flex items-center justify-between mb-12">
                 <Button
                     variant="ghost"
@@ -127,7 +129,6 @@ export default function WritePage() {
                 )}
             </div>
 
-            {/* STEP 1: THE HOOK (Title & Cover Image) */}
             {step === 1 && (
                 <div className="flex-1 flex flex-col gap-8 duration-500 animate-in fade-in slide-in-from-bottom-4 pb-20">
                     <div className="space-y-2">
@@ -135,7 +136,7 @@ export default function WritePage() {
                         <p className="text-muted-foreground">A strong title and cover image pull readers in.</p>
                     </div>
 
-                    {/* Cover Image Uploader Mock */}
+               
                     <div className="relative group rounded-[2rem] border-2 border-dashed border-border/60 bg-muted/30 hover:bg-muted/50 transition-colors flex flex-col items-center justify-center overflow-hidden aspect-video max-h-[400px]">
                         {coverImage ? (
                             <>
@@ -169,7 +170,7 @@ export default function WritePage() {
                         )}
                     </div>
 
-                    {/* Title Input */}
+                  
                     <div className="mt-4">
                         <input
                             type="text"
@@ -188,7 +189,7 @@ export default function WritePage() {
                 </div>
             )}
 
-            {/* STEP 2: THE CONTENT (Editor & Tags) */}
+            
             {step === 2 && (
                 <div className="flex-1 flex flex-col gap-6 duration-500 animate-in fade-in slide-in-from-right-8 pb-32">
                     <div className="space-y-2">
@@ -196,7 +197,7 @@ export default function WritePage() {
                         <p className="text-muted-foreground text-sm">Now, write your masterpiece.</p>
                     </div>
 
-                    {/* Tags Input Area */}
+                    
                     <div className="p-4 rounded-xl border border-border bg-card/50 shadow-sm flex flex-col gap-3">
                         <label className="text-sm font-semibold text-foreground">Add up to 5 Tags</label>
                         <div className="flex flex-wrap gap-2 items-center">
@@ -231,7 +232,7 @@ export default function WritePage() {
                         </div>
                     </div>
 
-                    {/* Tiptap Editor inside an expanding flex container */}
+                    
                     <div className="flex-1 mt-2 mb-20">
                         <TiptapEditor content={content} onChange={setContent} />
                     </div>

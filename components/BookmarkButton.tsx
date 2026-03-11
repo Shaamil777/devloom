@@ -12,7 +12,6 @@ export function BookmarkButton({ postSlug }: { postSlug: string }) {
     const router = useRouter()
     const [isAnimating, setIsAnimating] = useState(false)
 
-    // Fetch initial save status
     const { data: saveData = { hasSaved: false } } = useQuery({
         queryKey: ['saved', postSlug],
         queryFn: async () => {
@@ -22,7 +21,6 @@ export function BookmarkButton({ postSlug }: { postSlug: string }) {
         }
     })
 
-    // Toggle Save Mutation
     const toggleSave = useMutation({
         mutationFn: async () => {
             const res = await fetch(`/api/posts/${postSlug}/save`, { method: 'POST' })
@@ -30,13 +28,10 @@ export function BookmarkButton({ postSlug }: { postSlug: string }) {
             return res.json()
         },
         onMutate: async () => {
-            // Cancel outgoing to stop race conditions
             await queryClient.cancelQueries({ queryKey: ['saved', postSlug] })
 
-            // Snapshot previous
             const previousData = queryClient.getQueryData(['saved', postSlug]) as { hasSaved: boolean }
 
-            // Optimistic update
             queryClient.setQueryData(['saved', postSlug], { hasSaved: !previousData?.hasSaved })
 
             return { previousData }

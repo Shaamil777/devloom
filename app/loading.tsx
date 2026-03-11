@@ -2,25 +2,20 @@ export default function HomeLoading() {
     return (
         <main className="max-w-7xl mx-auto px-4 py-8 w-full bg-background min-h-screen animate-pulse">
 
-            {/* Hero Banner Skeleton */}
             <div className="w-full h-[200px] md:h-[260px] rounded-3xl bg-muted/50 mb-10" />
 
             <div className="flex flex-col lg:flex-row gap-8 xl:gap-14">
 
-                {/* Main Feed Column */}
                 <div className="flex-1 min-w-0">
                     <div className="mb-14 border-b border-border/50 pb-14">
 
-                        {/* Section Title */}
                         <div className="flex items-center gap-2.5 mb-6">
                             <div className="w-2 h-2 rounded-full bg-muted" />
                             <div className="h-3 w-28 bg-muted rounded" />
                         </div>
 
-                        {/* Featured Post Skeleton */}
                         <div className="w-full h-[280px] md:h-[340px] rounded-2xl bg-muted/40 border border-border/30 mb-6" />
 
-                        {/* Grid Posts Skeleton */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-2">
                             {[1, 2, 3, 4].map((i) => (
                                 <div key={i} className="rounded-2xl border border-border/30 bg-card/50 overflow-hidden">
@@ -40,7 +35,6 @@ export default function HomeLoading() {
                     </div>
                 </div>
 
-                {/* Sidebar Skeleton */}
                 <aside className="w-full lg:w-[320px] xl:w-[340px] shrink-0">
                     <div className="rounded-2xl border border-border/30 bg-card/50 p-6 space-y-4">
                         <div className="h-5 w-40 bg-muted/50 rounded" />

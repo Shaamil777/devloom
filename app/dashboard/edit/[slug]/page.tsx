@@ -19,7 +19,6 @@ export default function EditPostPage() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState("")
 
-    // Fetch the existing post data
     useEffect(() => {
         async function fetchPost() {
             try {
@@ -31,7 +30,6 @@ export default function EditPostPage() {
                 }
                 const post = await res.json()
 
-                // Verify ownership
                 const meRes = await fetch("/api/me")
                 const me = await meRes.json()
 
@@ -53,7 +51,6 @@ export default function EditPostPage() {
         fetchPost()
     }, [slug])
 
-    // Update mutation
     const updatePost = useMutation({
         mutationFn: async () => {
             const res = await fetch(`/api/posts/${slug}`, {
@@ -70,7 +67,6 @@ export default function EditPostPage() {
         },
     })
 
-    // Loading state
     if (loading) {
         return (
             <div className="max-w-4xl mx-auto py-10 px-4 min-h-[calc(100vh-4rem)] flex items-center justify-center">
@@ -79,7 +75,6 @@ export default function EditPostPage() {
         )
     }
 
-    // Error state
     if (error) {
         return (
             <div className="max-w-4xl mx-auto py-10 px-4 min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center gap-4">
@@ -94,7 +89,6 @@ export default function EditPostPage() {
     return (
         <div className="max-w-4xl mx-auto py-10 px-4 min-h-[calc(100vh-4rem)] flex flex-col">
 
-            {/* Top Navigation */}
             <div className="flex items-center justify-between mb-10">
                 <Button
                     variant="ghost"
@@ -127,13 +121,11 @@ export default function EditPostPage() {
                 </Button>
             </div>
 
-            {/* Title */}
             <div className="space-y-2 mb-6">
                 <h2 className="text-2xl font-bold tracking-tight text-foreground">Edit your post</h2>
                 <p className="text-muted-foreground text-sm">Update the title, cover image, or content below.</p>
             </div>
 
-            {/* Cover Image */}
             <div className="mb-6">
                 <label className="text-sm font-semibold text-foreground mb-2 block">Cover Image URL</label>
                 <Input
@@ -149,7 +141,6 @@ export default function EditPostPage() {
                 )}
             </div>
 
-            {/* Title Input */}
             <div className="mb-6">
                 <label className="text-sm font-semibold text-foreground mb-2 block">Title</label>
                 <input
@@ -161,13 +152,11 @@ export default function EditPostPage() {
                 />
             </div>
 
-            {/* Content Editor */}
             <div className="flex-1 mb-20">
                 <label className="text-sm font-semibold text-foreground mb-2 block">Content</label>
                 <TiptapEditor content={content} onChange={setContent} />
             </div>
 
-            {/* Error Display */}
             {updatePost.isError && (
                 <div className="fixed bottom-6 left-1/2 -translate-x-1/2 px-6 py-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm font-medium">
                     Failed to save changes. Please try again.

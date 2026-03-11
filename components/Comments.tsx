@@ -39,7 +39,6 @@ export function Comments({ postSlug }: { postSlug: string }) {
     const [editingId, setEditingId] = useState<string | null>(null)
     const [editContent, setEditContent] = useState("")
 
-    // Fetch comments
     const { data: comments = [], isLoading } = useQuery<Comment[]>({
         queryKey: ['comments', postSlug],
         queryFn: async () => {
@@ -49,7 +48,6 @@ export function Comments({ postSlug }: { postSlug: string }) {
         }
     })
 
-    // Post comment mutation
     const addComment = useMutation({
         mutationFn: async (newComment: string) => {
             const res = await fetch(`/api/posts/${postSlug}/comments`, {
@@ -121,7 +119,6 @@ export function Comments({ postSlug }: { postSlug: string }) {
                 </h2>
             </div>
 
-            {/* Comment Form */}
             <div className="mb-10 bg-card p-6 rounded-2xl border border-border shadow-sm">
                 {!session ? (
                     <div className="text-center py-6">
@@ -163,7 +160,6 @@ export function Comments({ postSlug }: { postSlug: string }) {
                 )}
             </div>
 
-            {/* Comments List */}
             {isLoading ? (
                 <div className="text-center py-10 text-muted-foreground animate-pulse">Loading comments...</div>
             ) : comments.length === 0 ? (

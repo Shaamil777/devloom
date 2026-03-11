@@ -16,12 +16,8 @@ export function PostActions({ postSlug, authorId }: PostActionsProps) {
     const [showConfirm, setShowConfirm] = useState(false)
     const [deleting, setDeleting] = useState(false)
 
-    // Only show if the current user is the author
     if (!session?.user?.email) return null
 
-    // We need to check by matching the session user to the author
-    // This component receives authorId from the server component
-    // We'll fetch current user ID from session to compare
 
     return (
         <UserActions
@@ -55,11 +51,9 @@ function UserActions({
 }) {
     const { data: session } = useSession()
 
-    // Check ownership via a simple API call on mount
     const [isOwner, setIsOwner] = useState<boolean | null>(null)
 
     useEffect(() => {
-        // Quick check: fetch current user and compare IDs
         fetch("/api/me")
             .then(res => res.json())
             .then(user => {
@@ -92,9 +86,7 @@ function UserActions({
 
     return (
         <>
-            {/* Desktop: action buttons in sidebar */}
             <div className="flex flex-col gap-3">
-                {/* Edit Button */}
                 <button
                     onClick={() => router.push(`/dashboard/edit/${postSlug}`)}
                     className="h-11 w-11 rounded-full bg-card hover:bg-muted border border-border flex items-center justify-center transition-all duration-300 text-muted-foreground hover:text-emerald-500 hover:border-emerald-500/50 group shadow-sm hover:shadow-md cursor-pointer"
@@ -103,7 +95,6 @@ function UserActions({
                     <Pencil className="h-4.5 w-4.5 group-hover:scale-110 transition-transform" />
                 </button>
 
-                {/* Delete Button */}
                 <button
                     onClick={() => setShowConfirm(true)}
                     className="h-11 w-11 rounded-full bg-card hover:bg-red-500/10 border border-border flex items-center justify-center transition-all duration-300 text-muted-foreground hover:text-red-500 hover:border-red-500/50 group shadow-sm hover:shadow-md cursor-pointer"
@@ -113,16 +104,13 @@ function UserActions({
                 </button>
             </div>
 
-            {/* Delete Confirmation Modal */}
             {showConfirm && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-                    {/* Backdrop */}
                     <div
                         className="absolute inset-0 bg-black/60 backdrop-blur-sm"
                         onClick={() => setShowConfirm(false)}
                     />
 
-                    {/* Modal */}
                     <div className="relative bg-card border border-border rounded-2xl p-6 max-w-sm w-full shadow-2xl">
                         <div className="flex flex-col items-center text-center">
                             <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 mb-4">

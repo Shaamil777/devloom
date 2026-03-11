@@ -18,7 +18,6 @@ export default function BlogPostError({
     return (
         <main className="max-w-4xl mx-auto px-4 py-8 md:py-16 bg-background min-h-[calc(100vh-4rem)]">
 
-            {/* Back Button */}
             <div className="mb-12">
                 <Link
                     href="/blogs"
@@ -31,7 +30,6 @@ export default function BlogPostError({
 
             <div className="flex flex-col items-center text-center max-w-lg mx-auto">
 
-                {/* Icon */}
                 <div className="mb-8 p-5 rounded-2xl bg-orange-500/10 border border-orange-500/20">
                     <FileWarning className="h-10 w-10 text-orange-500" />
                 </div>
@@ -43,7 +41,6 @@ export default function BlogPostError({
                     There was a problem loading this post. The server might be temporarily unavailable — give it another try.
                 </p>
 
-                {/* Actions */}
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto">
                     <button
                         onClick={() => reset()}

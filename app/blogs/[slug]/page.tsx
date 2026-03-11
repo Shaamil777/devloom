@@ -32,7 +32,6 @@ export async function generateMetadata({ params }: PageProps) {
 export default async function BlogPostPage({ params }: PageProps) {
     const resolvedParams = await params;
 
-    // Fetch the post from DB along with author and tags
     const post = await prisma.post.findUnique({
         where: { slug: resolvedParams.slug },
         include: {
@@ -46,7 +45,6 @@ export default async function BlogPostPage({ params }: PageProps) {
         },
     });
 
-    // Handle missing or unpublished posts
     if (!post || !post.published) {
         notFound();
     }
@@ -54,17 +52,14 @@ export default async function BlogPostPage({ params }: PageProps) {
     return (
         <main className="max-w-4xl mx-auto px-4 py-8 md:py-16 bg-background min-h-screen">
             <article className="w-full">
-                {/* Header section */}
                 <header className="mb-10 flex flex-col items-center text-center">
 
-                    {/* Back Button */}
                     <div className="w-full flex justify-start mb-6 -ml-2">
                         <Link href="/" className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors text-sm font-medium group px-2 py-1 bg-transparent rounded-md">
                             <span className="group-hover:-translate-x-1 transition-transform">&larr;</span> Back to Home
                         </Link>
                     </div>
 
-                    {/* Tags */}
                     {post.tags.length > 0 && (
                         <div className="flex flex-wrap justify-center gap-2 mb-6">
                             {post.tags.map((tagObj) => (
@@ -77,12 +72,10 @@ export default async function BlogPostPage({ params }: PageProps) {
                         </div>
                     )}
 
-                    {/* Title */}
                     <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground mb-8 leading-tight max-w-3xl">
                         {post.title}
                     </h1>
 
-                    {/* Meta info row */}
                     <div className="flex flex-wrap items-center justify-center gap-4 text-muted-foreground w-full">
                         <Link href={`/profile/${post.author.id}`} className="flex items-center gap-3 group">
                             <Avatar className="h-11 w-11 border border-border shadow-sm group-hover:border-primary transition-colors">
@@ -107,7 +100,6 @@ export default async function BlogPostPage({ params }: PageProps) {
                     </div>
                 </header>
 
-                {/* Cover Image */}
                 {post.coverImage && (
                     <div className="w-full aspect-video md:aspect-[21/9] rounded-[2rem] overflow-hidden mb-12 border border-border shadow-2xl shadow-primary/5 relative">
                         <img
@@ -118,10 +110,8 @@ export default async function BlogPostPage({ params }: PageProps) {
                     </div>
                 )}
 
-                {/* Sticky Action Sidebar (Desktop) / Floating Action Bar (Mobile) & Content */}
                 <div className="relative flex flex-col md:flex-row gap-8 xl:gap-14">
 
-                    {/* Left Sticky Actions */}
                     <aside className="hidden md:flex flex-col gap-5 sticky top-32 h-fit shrink-0 mt-2">
                         <LikeButton postSlug={post.slug} />
                         <a href="#comments" className="h-11 w-11 rounded-full bg-card hover:bg-muted border border-border flex items-center justify-center transition-all duration-300 text-muted-foreground hover:text-blue-500 hover:border-blue-500/50 group shadow-sm hover:shadow-md relative">
@@ -138,7 +128,6 @@ export default async function BlogPostPage({ params }: PageProps) {
                         <PostActions postSlug={post.slug} authorId={post.authorId} />
                     </aside>
 
-                    {/* Content Area */}
                     <div
                         className="flex-1 w-full min-w-0 prose prose-lg md:prose-xl prose-invert max-w-none 
                         prose-p:leading-relaxed prose-headings:font-bold prose-headings:tracking-tight 
@@ -152,7 +141,6 @@ export default async function BlogPostPage({ params }: PageProps) {
                     />
                 </div>
 
-                {/* Mobile Action Bar */}
                 <div className="md:hidden flex items-center justify-center gap-6 mt-12 py-6 border-t border-border">
                     <LikeButton postSlug={post.slug} />
                     <a href="#comments" className="h-12 w-12 rounded-full bg-card hover:bg-muted border border-border flex items-center justify-center transition-all duration-300 text-muted-foreground hover:text-blue-500 hover:border-blue-500/50 group shadow-sm hover:shadow-md relative">
@@ -168,7 +156,6 @@ export default async function BlogPostPage({ params }: PageProps) {
                     <PostActions postSlug={post.slug} authorId={post.authorId} />
                 </div>
 
-                {/* Comments Section */}
                 <Comments postSlug={resolvedParams.slug} />
 
             </article>

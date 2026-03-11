@@ -2,7 +2,6 @@ export default function SavedLoading() {
     return (
         <main className="max-w-4xl mx-auto px-4 py-8 md:py-16 bg-background min-h-screen animate-pulse">
 
-            {/* Page Header */}
             <div className="flex items-center gap-3 mb-10 border-b border-border/50 pb-8">
                 <div className="p-3 bg-muted/30 rounded-xl">
                     <div className="h-6 w-6 bg-muted/50 rounded" />
@@ -13,7 +12,6 @@ export default function SavedLoading() {
                 </div>
             </div>
 
-            {/* Posts Grid Skeleton */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {[1, 2, 3, 4].map((i) => (
                     <div key={i} className="rounded-2xl border border-border/30 bg-card/50 overflow-hidden">

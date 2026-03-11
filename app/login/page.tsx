@@ -30,7 +30,6 @@ function LoginContent() {
     return (
         <main className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 py-16 bg-background relative overflow-hidden">
 
-            {/* Background ambient effects */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
                 <div className="absolute -top-[40%] -left-[20%] w-[600px] h-[600px] bg-blue-500/[0.03] rounded-full blur-3xl" />
                 <div className="absolute -bottom-[30%] -right-[15%] w-[500px] h-[500px] bg-purple-500/[0.03] rounded-full blur-3xl" />
@@ -38,7 +37,6 @@ function LoginContent() {
 
             <div className="w-full max-w-[420px] relative z-10">
 
-                {/* Logo / Branding */}
                 <div className="text-center mb-10">
                     <h1 className="text-3xl font-extrabold tracking-tight text-foreground mb-2">
                         Welcome to <span className="text-primary">DevLoom</span>
@@ -48,7 +46,6 @@ function LoginContent() {
                     </p>
                 </div>
 
-                {/* Card */}
                 <div className="bg-card border border-border rounded-2xl p-8 shadow-xl shadow-black/20">
 
                     <h2 className="text-lg font-bold text-foreground text-center mb-2">
@@ -58,7 +55,6 @@ function LoginContent() {
                         Choose your preferred sign-in method
                     </p>
 
-                    {/* Error message */}
                     {error && (
                         <div className="mb-6 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-center">
                             <p className="text-sm text-red-400">
@@ -69,10 +65,8 @@ function LoginContent() {
                         </div>
                     )}
 
-                    {/* Auth Buttons */}
                     <div className="space-y-3">
 
-                        {/* Google */}
                         <button
                             onClick={() => handleSignIn("google")}
                             disabled={loadingProvider !== null}
@@ -86,14 +80,12 @@ function LoginContent() {
                             <span>Continue with Google</span>
                         </button>
 
-                        {/* Divider */}
                         <div className="flex items-center gap-3 py-1">
                             <div className="h-px flex-1 bg-border" />
                             <span className="text-xs text-muted-foreground/60 font-medium uppercase tracking-widest">or</span>
                             <div className="h-px flex-1 bg-border" />
                         </div>
 
-                        {/* GitHub */}
                         <button
                             onClick={() => handleSignIn("github")}
                             disabled={loadingProvider !== null}
@@ -109,7 +101,6 @@ function LoginContent() {
                     </div>
                 </div>
 
-                {/* Footer note */}
                 <p className="text-xs text-muted-foreground/50 text-center mt-6 leading-relaxed max-w-xs mx-auto">
                     By signing in, you agree to our Terms of Service and Privacy Policy.
                 </p>

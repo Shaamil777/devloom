@@ -19,7 +19,6 @@ export function ShareButton({ title, slug }: { title: string, slug: string }) {
             if (navigator.share && navigator.canShare(shareData)) {
                 await navigator.share(shareData)
             } else {
-                // Fallback if Web Share API is not supported
                 await navigator.clipboard.writeText(shareData.url)
                 toast.success("Link copied to clipboard!")
             }

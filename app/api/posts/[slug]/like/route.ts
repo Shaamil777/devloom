@@ -73,7 +73,6 @@ export async function GET(
         const session = await getServerSession(authOptions)
         const { slug } = await params
 
-        // Find the post ID
         const post = await prisma.post.findUnique({
             where: { slug },
             select: { id: true }
@@ -83,7 +82,6 @@ export async function GET(
             return Response.json({ error: "Post not found" }, { status: 404 })
         }
 
-        // Get total likes for post
         const totalLikes = await prisma.like.count({
             where: { postId: post.id }
         })

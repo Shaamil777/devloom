@@ -23,14 +23,11 @@ const socialLinks = [
 export default function Footer() {
     return (
         <footer className="relative border-t border-border bg-background overflow-hidden">
-            {/* Subtle gradient glow at the top */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
 
             <div className="max-w-7xl mx-auto px-4 py-16">
-                {/* Main Footer Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8">
 
-                    {/* Brand Column */}
                     <div className="md:col-span-5 space-y-5">
                         <Link href="/" className="inline-block">
                             <span className="text-2xl font-extrabold tracking-tight text-foreground">
@@ -42,7 +39,6 @@ export default function Footer() {
                             explore insights, and connect with the dev community.
                         </p>
 
-                        {/* Social Links */}
                         <div className="flex items-center gap-2 pt-2">
                             {socialLinks.map((social) => (
                                 <a
@@ -59,7 +55,6 @@ export default function Footer() {
                         </div>
                     </div>
 
-                    {/* Links Columns */}
                     <div className="md:col-span-3">
                         <h3 className="text-[11px] font-bold tracking-[0.2em] text-muted-foreground uppercase mb-5">
                             Explore
@@ -98,7 +93,6 @@ export default function Footer() {
                         </ul>
                     </div>
 
-                    {/* Newsletter / CTA Column */}
                     <div className="md:col-span-2">
                         <h3 className="text-[11px] font-bold tracking-[0.2em] text-muted-foreground uppercase mb-5">
                             Stay Updated
@@ -117,7 +111,6 @@ export default function Footer() {
                     </div>
                 </div>
 
-                {/* Bottom Bar */}
                 <div className="mt-16 pt-8 border-t border-border/50">
                     <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                         <p className="text-xs text-muted-foreground/70 flex items-center gap-1.5">

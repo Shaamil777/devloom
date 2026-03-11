@@ -12,7 +12,6 @@ export function LikeButton({ postSlug }: { postSlug: string }) {
     const router = useRouter()
     const [isAnimating, setIsAnimating] = useState(false)
 
-    // Fetch initial like status and count
     const { data: likeData = { totalLikes: 0, hasLiked: false } } = useQuery({
         queryKey: ['likes', postSlug],
         queryFn: async () => {
@@ -22,7 +21,6 @@ export function LikeButton({ postSlug }: { postSlug: string }) {
         }
     })
 
-    // Toggle Like Mutation
     const toggleLike = useMutation({
         mutationFn: async () => {
             const res = await fetch(`/api/posts/${postSlug}/like`, { method: 'POST' })
@@ -30,13 +28,10 @@ export function LikeButton({ postSlug }: { postSlug: string }) {
             return res.json()
         },
         onMutate: async () => {
-            // Cancel any outgoing refetches to prevent optimistic update overwrite
             await queryClient.cancelQueries({ queryKey: ['likes', postSlug] })
 
-            // Snapshot the previous value
             const previousData = queryClient.getQueryData(['likes', postSlug]) as { totalLikes: number, hasLiked: boolean }
 
-            // Optimistically update
             queryClient.setQueryData(['likes', postSlug], {
                 ...previousData,
                 hasLiked: !previousData.hasLiked,
@@ -46,11 +41,9 @@ export function LikeButton({ postSlug }: { postSlug: string }) {
             return { previousData }
         },
         onError: (err, newLike, context) => {
-            // Rollback on error
             queryClient.setQueryData(['likes', postSlug], context?.previousData)
         },
         onSettled: () => {
-            // Refetch to sync true server state
             queryClient.invalidateQueries({ queryKey: ['likes', postSlug] })
         }
     })
