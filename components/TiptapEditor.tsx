@@ -93,7 +93,7 @@ export default function TiptapEditor({ content, onChange }: TiptapEditorProps) {
             </div>
 
             {/* The actual editable area */}
-            <div className="bg-background">
+            <div className="bg-background w-full h-full overflow-y-auto">
                 <EditorContent editor={editor} />
             </div>
         </div>

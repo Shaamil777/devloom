@@ -17,6 +17,7 @@ export default function WritePage() {
     const [title, setTitle] = useState("")
     const [coverImage, setCoverImage] = useState("")
     const [content, setContent] = useState("<p>Start writing your masterpiece...</p>")
+    const [isUploading, setIsUploading] = useState(false)
 
     // Tags logic
     const [tags, setTags] = useState<string[]>([])
@@ -36,6 +37,33 @@ export default function WritePage() {
 
     // Dynamic slug preview
     const slugPreview = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '')
+
+    // Handle Image Upload Directly
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+
+        setIsUploading(true)
+        const formData = new FormData()
+        formData.append('file', file)
+        formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || 'devloom_uploads')
+
+        try {
+            const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
+            const res = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+                method: 'POST',
+                body: formData,
+            })
+            const data = await res.json()
+            if (data.secure_url) {
+                setCoverImage(data.secure_url)
+            }
+        } catch (error) {
+            console.error("Upload failed", error)
+        } finally {
+            setIsUploading(false)
+        }
+    }
 
     // Publishing Mutation
     const createPost = useMutation({
@@ -61,7 +89,7 @@ export default function WritePage() {
     })
 
     return (
-        <div className="max-w-4xl mx-auto py-10 px-4 min-h-[calc(100vh-4rem)] flex flex-col">
+        <div className="max-w-4xl mx-auto py-10 px-4 min-h-screen flex flex-col">
 
             {/* Top Navigation / Progress */}
             <div className="flex items-center justify-between mb-12">
@@ -101,7 +129,7 @@ export default function WritePage() {
 
             {/* STEP 1: THE HOOK (Title & Cover Image) */}
             {step === 1 && (
-                <div className="flex-1 flex flex-col gap-8 duration-500 animate-in fade-in slide-in-from-bottom-4">
+                <div className="flex-1 flex flex-col gap-8 duration-500 animate-in fade-in slide-in-from-bottom-4 pb-20">
                     <div className="space-y-2">
                         <h2 className="text-3xl font-bold tracking-tight text-foreground">Frame your story</h2>
                         <p className="text-muted-foreground">A strong title and cover image pull readers in.</p>
@@ -123,14 +151,20 @@ export default function WritePage() {
                                 </div>
                                 <div className="space-y-1">
                                     <p className="text-sm font-medium text-foreground">Add a cover image</p>
-                                    <p className="text-xs text-muted-foreground">Paste a high-quality image URL to make your post stand out.</p>
+                                    <p className="text-xs text-muted-foreground">Upload from your computer to make your post stand out.</p>
                                 </div>
-                                <Input
-                                    placeholder="https://images.unsplash.com/..."
-                                    className="mt-2 bg-background border-border"
-                                    value={coverImage}
-                                    onChange={(e) => setCoverImage(e.target.value)}
-                                />
+                                <label className="cursor-pointer">
+                                    <input 
+                                        type="file" 
+                                        accept="image/*" 
+                                        className="hidden" 
+                                        onChange={handleImageUpload} 
+                                        disabled={isUploading}
+                                    />
+                                    <div className={`inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                                        {isUploading ? "Uploading..." : "Upload an Image"}
+                                    </div>
+                                </label>
                             </div>
                         )}
                     </div>
@@ -156,7 +190,7 @@ export default function WritePage() {
 
             {/* STEP 2: THE CONTENT (Editor & Tags) */}
             {step === 2 && (
-                <div className="flex-1 flex flex-col gap-6 duration-500 animate-in fade-in slide-in-from-right-8">
+                <div className="flex-1 flex flex-col gap-6 duration-500 animate-in fade-in slide-in-from-right-8 pb-32">
                     <div className="space-y-2">
                         <h2 className="text-2xl font-bold tracking-tight text-foreground line-clamp-1">{title}</h2>
                         <p className="text-muted-foreground text-sm">Now, write your masterpiece.</p>

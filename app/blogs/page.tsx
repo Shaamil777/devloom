@@ -2,6 +2,15 @@ import prisma from "@/lib/prisma"
 import { PostCard } from "@/components/PostCard"
 import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
+import {
+    Pagination,
+    PaginationContent,
+    PaginationEllipsis,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination"
 
 export const metadata = {
     title: 'Explore Articles | DevLoom',
@@ -15,24 +24,34 @@ interface PageProps {
 export default async function BlogsPage({ searchParams }: PageProps) {
     const resolvedParams = await searchParams;
     const tagSlug = typeof resolvedParams.tag === 'string' ? resolvedParams.tag : undefined
+    const currentPage = typeof resolvedParams.page === 'string' ? Math.max(1, parseInt(resolvedParams.page) || 1) : 1
+    const ITEMS_PER_PAGE = 12
 
     // Fetch all available tags for the filter
     const tags = await prisma.tag.findMany({
         orderBy: { name: 'asc' }
     })
 
+    const whereClause = {
+        published: true,
+        ...(tagSlug ? {
+            tags: {
+                some: {
+                    tag: { slug: tagSlug }
+                }
+            }
+        } : {})
+    }
+
+    // Count total posts for pagination
+    const totalPosts = await prisma.post.count({ where: whereClause })
+    const totalPages = Math.ceil(totalPosts / ITEMS_PER_PAGE)
+
     // Fetch posts, optionally filtering by specific tag slug
     const posts = await prisma.post.findMany({
-        where: {
-            published: true,
-            ...(tagSlug ? {
-                tags: {
-                    some: {
-                        tag: { slug: tagSlug }
-                    }
-                }
-            } : {})
-        },
+        where: whereClause,
+        take: ITEMS_PER_PAGE,
+        skip: (currentPage - 1) * ITEMS_PER_PAGE,
         orderBy: { createdAt: "desc" },
         include: {
             author: true,
@@ -89,11 +108,70 @@ export default async function BlogsPage({ searchParams }: PageProps) {
                     )}
                 </div>
             ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                    {posts.map(post => (
-                        <PostCard key={post.id} post={post} compact />
-                    ))}
-                </div>
+                <>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mb-12">
+                        {posts.map(post => (
+                            <PostCard key={post.id} post={post} compact />
+                        ))}
+                    </div>
+
+                    {totalPages > 1 && (
+                        <Pagination className="mt-8 pb-12">
+                            <PaginationContent>
+                                <PaginationItem>
+                                    <PaginationPrevious 
+                                        href={currentPage > 1 ? `/blogs?${new URLSearchParams({
+                                            ...(tagSlug ? { tag: tagSlug } : {}),
+                                            page: (currentPage - 1).toString()
+                                        }).toString()}` : '#'} 
+                                        className={currentPage <= 1 ? "pointer-events-none opacity-50" : ""}
+                                    />
+                                </PaginationItem>
+                                
+                                {Array.from({ length: totalPages }).map((_, i) => {
+                                    const page = i + 1;
+                                    // Show first, last, current, and adjacent pages
+                                    if (page === 1 || page === totalPages || (page >= currentPage - 1 && page <= currentPage + 1)) {
+                                        return (
+                                            <PaginationItem key={page}>
+                                                <PaginationLink
+                                                    isActive={page === currentPage}
+                                                    href={`/blogs?${new URLSearchParams({
+                                                        ...(tagSlug ? { tag: tagSlug } : {}),
+                                                        page: page.toString()
+                                                    }).toString()}`}
+                                                >
+                                                    {page}
+                                                </PaginationLink>
+                                            </PaginationItem>
+                                        );
+                                    }
+                                    
+                                    // Render ellipses where there are gaps
+                                    if (page === currentPage - 2 || page === currentPage + 2) {
+                                        return (
+                                            <PaginationItem key={page}>
+                                                <PaginationEllipsis />
+                                            </PaginationItem>
+                                        );
+                                    }
+
+                                    return null;
+                                })}
+
+                                <PaginationItem>
+                                    <PaginationNext 
+                                        href={currentPage < totalPages ? `/blogs?${new URLSearchParams({
+                                            ...(tagSlug ? { tag: tagSlug } : {}),
+                                            page: (currentPage + 1).toString()
+                                        }).toString()}` : '#'}
+                                        className={currentPage >= totalPages ? "pointer-events-none opacity-50" : ""}
+                                    />
+                                </PaginationItem>
+                            </PaginationContent>
+                        </Pagination>
+                    )}
+                </>
             )}
         </main>
     )

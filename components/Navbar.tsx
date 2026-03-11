@@ -1,8 +1,10 @@
 "use client"
 import Link from "next/link"
 import { useSession, signOut } from "next-auth/react"
-import { Search, PenSquare, LogOut, LayoutDashboard } from "lucide-react"
+import { Search, PenSquare, LogOut, LayoutDashboard, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import React, { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Input } from "@/components/ui/input"
 import {
     DropdownMenu,
@@ -15,6 +17,17 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 export default function Navbar() {
     const { data: session, status } = useSession()
+    const [searchQuery, setSearchQuery] = useState("")
+    const [isSearchOpen, setIsSearchOpen] = useState(false)
+    const router = useRouter()
+
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault()
+        if (searchQuery.trim()) {
+            router.push(`/search?q=${encodeURIComponent(searchQuery)}`)
+            setIsSearchOpen(false)
+        }
+    }
 
     return (
         <nav className="border-b border-border bg-background relative z-50">
@@ -35,18 +48,31 @@ export default function Navbar() {
 
                 {/* 2. CENTER SECTION (Search Bar) */}
                 <div className="flex-1 flex justify-center max-w-md mx-auto hidden md:flex">
-                    <div className="relative w-full">
+                    <form onSubmit={handleSearch} className="relative w-full">
                         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                         <Input
                             type="search"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
                             placeholder="Search posts..."
                             className="w-full pl-9 rounded-full bg-input border-border focus-visible:ring-ring"
                         />
-                    </div>
+                    </form>
                 </div>
 
                 {/* 3. RIGHT SECTION (Auth / Profile) */}
-                <div className="flex items-center gap-4 ml-auto">
+                <div className="flex items-center gap-2 sm:gap-4 ml-auto">
+                    {/* Mobile Search Toggle */}
+                    <Button 
+                        variant="ghost" 
+                        size="icon" 
+                        className="md:hidden rounded-full" 
+                        onClick={() => setIsSearchOpen(!isSearchOpen)}
+                        aria-label="Toggle search"
+                    >
+                        {isSearchOpen ? <X className="h-5 w-5" /> : <Search className="h-5 w-5" />}
+                    </Button>
+
                     {status === "loading" ? (
                         <div className="h-8 w-8 rounded-full bg-muted animate-pulse"></div>
                     ) : session ? (
@@ -109,6 +135,23 @@ export default function Navbar() {
                 </div>
 
             </div>
+
+            {/* Mobile Search Dropdown */}
+            {isSearchOpen && (
+                <div className="md:hidden border-t border-border p-4 bg-background w-full">
+                    <form onSubmit={handleSearch} className="relative w-full">
+                        <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                        <Input
+                            type="search"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            placeholder="Search posts..."
+                            className="w-full pl-9 rounded-full bg-input border-border focus-visible:ring-ring"
+                            autoFocus
+                        />
+                    </form>
+                </div>
+            )}
         </nav >
     )
 }
