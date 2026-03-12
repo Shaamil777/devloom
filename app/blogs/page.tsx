@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma"
 import { PostCard } from "@/components/PostCard"
 import Link from "next/link"
-import { Badge } from "@/components/ui/badge"
+import { TagFilter } from "@/components/TagFilter"
 import {
     Pagination,
     PaginationContent,
@@ -70,26 +70,7 @@ export default async function BlogsPage({ searchParams }: PageProps) {
                 </p>
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-3 mb-16 pb-8 border-b border-border/50">
-                <Link href="/blogs" scroll={false}>
-                    <Badge
-                        variant={!tagSlug ? "default" : "outline"}
-                        className={`text-sm px-5 py-2 cursor-pointer transition-all ${!tagSlug ? 'bg-primary text-primary-foreground shadow-md' : 'hover:bg-muted text-muted-foreground hover:text-foreground'}`}
-                    >
-                        All Posts
-                    </Badge>
-                </Link>
-                {tags.map(tag => (
-                    <Link key={tag.id} href={`/blogs?tag=${tag.slug}`} scroll={false}>
-                        <Badge
-                            variant={tagSlug === tag.slug ? "default" : "outline"}
-                            className={`text-sm px-5 py-2 cursor-pointer transition-all ${tagSlug === tag.slug ? 'bg-[#F97316] text-white hover:bg-[#F97316]/90 shadow-[0_4px_14px_0_rgba(249,115,22,0.39)] border-transparent' : 'hover:bg-muted text-muted-foreground hover:text-foreground'}`}
-                        >
-                            {tag.name}
-                        </Badge>
-                    </Link>
-                ))}
-            </div>
+            <TagFilter tags={tags} currentTag={tagSlug} />
 
             {posts.length === 0 ? (
                 <div className="text-center py-20 px-4 border border-dashed border-border rounded-3xl bg-card/50 shadow-sm flex flex-col items-center">

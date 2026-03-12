@@ -19,13 +19,37 @@ export async function generateMetadata({ params }: PageProps) {
     const resolvedParams = await params;
     const post = await prisma.post.findUnique({
         where: { slug: resolvedParams.slug },
+        include: { author: { select: { name: true } } }
     });
 
     if (!post) return { title: "Post Not Found" };
 
+    const excerpt = post.content.replace(/<[^>]+>/g, "").slice(0, 160) + "...";
+
     return {
-        title: `${post.title} | DevLoom`,
-        description: post.content.replace(/<[^>]+>/g, "").slice(0, 160),
+        title: post.title,
+        description: excerpt,
+        openGraph: {
+            title: post.title,
+            description: excerpt,
+            type: "article",
+            publishedTime: post.createdAt.toISOString(),
+            authors: [post.author?.name || "DevLoom Community"],
+            images: post.coverImage ? [
+                {
+                    url: post.coverImage,
+                    width: 1200,
+                    height: 630,
+                    alt: post.title,
+                }
+            ] : [],
+        },
+        twitter: {
+            card: "summary_large_image",
+            title: post.title,
+            description: excerpt,
+            images: post.coverImage ? [post.coverImage] : [],
+        }
     };
 }
 

@@ -5,20 +5,11 @@ import prisma from "@/lib/prisma";
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
         const session = await getServerSession(authOptions);
-        if (!session?.user?.email) {
-            return Response.json({ error: "Unauthorized" }, { status: 401 });
-        }
-
-        const { id } = await params;
-
-        const user = await prisma.user.findUnique({
-            where: { email: session.user.email }
-        });
-
-        if (user?.role !== "ADMIN") {
+        if (!session || session.user?.role !== "ADMIN") {
             return Response.json({ error: "Forbidden: Admins only" }, { status: 403 });
         }
 
+        const { id } = await params;
         const body = await req.json();
         const { published } = body;
 
@@ -41,19 +32,11 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
 export async function DELETE(req: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
         const session = await getServerSession(authOptions);
-        if (!session?.user?.email) {
-            return Response.json({ error: "Unauthorized" }, { status: 401 });
+        if (!session || session.user?.role !== "ADMIN") {
+            return Response.json({ error: "Forbidden: Admins only" }, { status: 403 });
         }
 
         const { id } = await params;
-
-        const user = await prisma.user.findUnique({
-            where: { email: session.user.email }
-        });
-
-        if (user?.role !== "ADMIN") {
-            return Response.json({ error: "Forbidden: Admins only" }, { status: 403 });
-        }
 
         await prisma.post.delete({
             where: { id }

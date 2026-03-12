@@ -27,5 +27,15 @@ export const authOptions: NextAuthOptions = {
 
     session: {
         strategy: "database"
+    },
+
+    callbacks: {
+        async session({ session, user }) {
+            if (session?.user) {
+                session.user.id = user.id;
+                session.user.role = user.role || "USER";
+            }
+            return session;
+        }
     }
 }

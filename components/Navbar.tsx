@@ -1,7 +1,7 @@
 "use client"
 import Link from "next/link"
 import { useSession, signOut } from "next-auth/react"
-import { Search, PenSquare, LogOut, LayoutDashboard, X } from "lucide-react"
+import { Search, PenSquare, LogOut, LayoutDashboard, X, Shield } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import React, { useState } from "react"
 import { useRouter } from "next/navigation"
@@ -102,6 +102,17 @@ export default function Navbar() {
                                         </div>
                                     </div>
                                     <DropdownMenuSeparator />
+                                    {session.user?.role === "ADMIN" && (
+                                        <>
+                                            <DropdownMenuItem asChild className="cursor-pointer text-primary focus:text-primary">
+                                                <Link href="/admin">
+                                                    <Shield className="mr-2 h-4 w-4" />
+                                                    <span>Admin Dashboard</span>
+                                                </Link>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuSeparator />
+                                        </>
+                                    )}
                                     <DropdownMenuItem asChild className="cursor-pointer">
                                         <Link href="/dashboard">
                                             <LayoutDashboard className="mr-2 h-4 w-4" />
