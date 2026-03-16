@@ -29,6 +29,9 @@ export async function generateMetadata({ params }: PageProps) {
     return {
         title: post.title,
         description: excerpt,
+        alternates: {
+            canonical: `/blogs/${post.slug}`,
+        },
         openGraph: {
             title: post.title,
             description: excerpt,
@@ -73,8 +76,25 @@ export default async function BlogPostPage({ params }: PageProps) {
         notFound();
     }
 
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": post.title,
+        "image": post.coverImage,
+        "datePublished": post.createdAt.toISOString(),
+        "dateModified": post.updatedAt.toISOString(),
+        "author": {
+            "@type": "Person",
+            "name": post.author.name,
+        },
+    };
+
     return (
         <main className="max-w-4xl mx-auto px-4 py-8 md:py-16 bg-background min-h-screen">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             <article className="w-full">
                 <header className="mb-10 flex flex-col items-center text-center">
 

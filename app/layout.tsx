@@ -11,27 +11,53 @@ import { cn } from "@/lib/utils";
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://devloom.vercel.app';
+
 export const metadata: Metadata = {
+    metadataBase: new URL(baseUrl),
     title: {
         template: "%s | DevLoom",
         default: "DevLoom | The Modern Developer Platform",
     },
     description: "Discover the latest insights, tutorials, and discussions in the modern developer ecosystem. Join DevLoom today.",
-    keywords: ["developer", "programming", "technology", "nextjs", "react", "tutorials", "software engineering"],
+    keywords: ["developer", "programming", "technology", "nextjs", "react", "tutorials", "software engineering", "coding blog"],
     authors: [{ name: "DevLoom Team" }],
     creator: "DevLoom",
+    alternates: {
+        canonical: "/",
+    },
     openGraph: {
         type: "website",
         locale: "en_US",
-        url: "https://devloom.vercel.app",
+        url: baseUrl,
         title: "DevLoom | The Modern Developer Platform",
         description: "Discover the latest insights, tutorials, and discussions in the modern developer ecosystem.",
         siteName: "DevLoom",
+        images: [
+            {
+                url: "/og-image.png", // We should ensure this exists or use a placeholder
+                width: 1200,
+                height: 630,
+                alt: "DevLoom Platform",
+            },
+        ],
     },
     twitter: {
         card: "summary_large_image",
         title: "DevLoom | The Modern Developer Platform",
         description: "Discover the latest insights, tutorials, and discussions in the modern developer ecosystem.",
+        images: ["/og-image.png"],
+    },
+    robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+            index: true,
+            follow: true,
+            'max-video-preview': -1,
+            'max-image-preview': 'large',
+            'max-snippet': -1,
+        },
     },
 };
 
